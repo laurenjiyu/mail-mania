@@ -19,6 +19,11 @@ public class BucketButton : MonoBehaviour
 
     private void OnClick()
     {
+        if (EmailManager.Instance == null)
+        {
+            Debug.LogError("EmailManager instance not found! Make sure EmailManager is set up in the scene.");
+            return;
+        }
         EmailManager.Instance.SortEmail(category);
     }
 }

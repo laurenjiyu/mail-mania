@@ -3,18 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 /// <summary>
 /// Represents a single email item in the inbox UI
 /// </summary>
-public class EmailItem : MonoBehaviour
+public class EmailItem : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField] private TextMeshProUGUI subjectText;
     [SerializeField] private TextMeshProUGUI blurbText;
     [SerializeField] private TextMeshProUGUI timeText;
     [SerializeField] private Image backgroundImage;
     [SerializeField] private Color selectedColor = Color.yellow;
-    [SerializeField] private Color normalColor = Color.white;
+    [SerializeField] private Color normalColor = new Color(0.9f, 0.9f, 0.9f, 1f); // Light gray
 
     private EmailData emailData;
     private int emailIndex;
@@ -24,7 +25,30 @@ public class EmailItem : MonoBehaviour
     private void Awake()
     {
         button = GetComponent<Button>();
-        button.onClick.AddListener(OnClick);
+        if (button == null)
+        {
+            Debug.LogError("EmailItem: Button component not found! Adding one now...");
+            button = gameObject.AddComponent<Button>();
+        }
+        
+        // Don't use button.onClick for now - we'll use OnPointerClick instead
+        
+        // Ensure background image is visible
+        if (backgroundImage == null)
+        {
+            backgroundImage = GetComponent<Image>();
+        }
+        
+        if (backgroundImage == null)
+        {
+            Debug.LogError("EmailItem: Image component not found! Adding one now...");
+            backgroundImage = gameObject.AddComponent<Image>();
+        }
+
+        // Set image to use a simple solid color (no sprite needed)
+        backgroundImage.sprite = null;
+        backgroundImage.type = Image.Type.Simple;
+        backgroundImage.color = normalColor;
     }
 
     /// <summary>
@@ -41,15 +65,37 @@ public class EmailItem : MonoBehaviour
         if (timeText != null) timeText.text = data.time;
 
         isSelected = false;
+        
+        // Ensure background image is visible
+        if (backgroundImage != null)
+        {
+            backgroundImage.color = normalColor;
+        }
+        
         UpdateAppearance();
     }
 
     /// <summary>
-    /// Called when this email is clicked
+    /// Called when this email is clicked (via OnClick method)
     /// </summary>
     private void OnClick()
     {
+        if (EmailManager.Instance == null)
+        {
+            Debug.LogError("EmailManager instance not found!");
+            return;
+        }
+        Debug.Log($"Email clicked: {emailData.subject}");
         EmailManager.Instance.SelectEmail(this);
+    }
+
+    /// <summary>
+    /// Implements IPointerClickHandler for click detection
+    /// </summary>
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        Debug.Log($"OnPointerClick detected on: {emailData?.subject ?? "Unknown"}");
+        OnClick();
     }
 
     /// <summary>
@@ -66,6 +112,11 @@ public class EmailItem : MonoBehaviour
     /// </summary>
     private void UpdateAppearance()
     {
+        if (backgroundImage == null)
+        {
+            backgroundImage = GetComponent<Image>();
+        }
+        
         if (backgroundImage != null)
         {
             backgroundImage.color = isSelected ? selectedColor : normalColor;
