@@ -11,8 +11,7 @@ public class EmailManager : MonoBehaviour
 {
     [SerializeField] private Transform emailContainer; // Parent transform where emails are displayed
     [SerializeField] private GameObject emailPrefab; // Email prefab to instantiate
-    [SerializeField] private int initialEmailCount = 5; // Number of emails to start with
-    [SerializeField] private float emailSpacing = 120f; // Vertical spacing between emails
+    [SerializeField] private int initialEmailCount = 7; // Number of emails to start with
 
     private List<EmailData> currentEmails = new List<EmailData>();
     private EmailItem selectedEmailItem = null;
@@ -60,6 +59,15 @@ public class EmailManager : MonoBehaviour
             Debug.LogError("ERROR: Canvas doesn't have GraphicRaycaster! Add Component > GraphicRaycaster");
         }
 
+        // Configure the Vertical Layout Group for proper spacing
+        VerticalLayoutGroup layoutGroup = emailContainer.GetComponent<VerticalLayoutGroup>();
+        if (layoutGroup != null)
+        {
+            layoutGroup.padding = new RectOffset(10, 10, 10, 10); // left, right, top, bottom
+            layoutGroup.spacing = 3; // minimal space between emails
+            Debug.Log("Configured Vertical Layout Group spacing");
+        }
+
         // Generate initial emails
         currentEmails = EmailContentDatabase.GenerateMixedEmails(initialEmailCount);
         Debug.Log($"Generated {currentEmails.Count} emails");
@@ -84,27 +92,18 @@ public class EmailManager : MonoBehaviour
         {
             GameObject emailGO = Instantiate(emailPrefab, emailContainer);
             Debug.Log($"Instantiated email {i}: {currentEmails[i].subject}");
-            
-            // Ensure RectTransform exists
-            RectTransform rectTransform = emailGO.GetComponent<RectTransform>();
-            if (rectTransform == null)
+
+            // FIX: Correct the RectTransform to have positive size
+            RectTransform rect = emailGO.GetComponent<RectTransform>();
+            if (rect != null)
             {
-                Debug.LogError($"Email prefab {i} doesn't have a RectTransform! The prefab must be a UI element.");
-                Debug.LogError("Make sure your Email prefab is created as a UI element (Right-click Canvas > UI > Button - TextMeshPro)");
-                Destroy(emailGO);
-                continue;
+                // Set to a reasonable default size if it's negative or zero
+                if (rect.sizeDelta.x <= 0 || rect.sizeDelta.y <= 0)
+                {
+                    rect.sizeDelta = new Vector2(1058, 80); // Smaller height to fit more emails
+                    Debug.Log($"Email {i} - Fixed RectTransform size to: {rect.sizeDelta}");
+                }
             }
-            
-            // Log position for debugging
-            Debug.Log($"Email {i} position: {rectTransform.anchoredPosition}, size: {rectTransform.sizeDelta}");
-            
-            // Reset RectTransform to defaults
-            rectTransform.anchoredPosition = Vector2.zero;
-            rectTransform.offsetMax = Vector2.zero;
-            rectTransform.offsetMin = Vector2.zero;
-            
-            // Force layout rebuild
-            LayoutRebuilder.MarkLayoutForRebuild(rectTransform);
 
             // Set up the email display
             EmailItem emailItem = emailGO.GetComponent<EmailItem>();
@@ -117,7 +116,7 @@ public class EmailManager : MonoBehaviour
             else
             {
                 emailItem.SetData(currentEmails[i], i);
-                Debug.Log($"Email {i} setup complete, clickable: {emailGO.GetComponent<Button>() != null}");
+                Debug.Log($"Email {i} setup complete");
             }
         }
     }
