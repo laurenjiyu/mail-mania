@@ -22,12 +22,12 @@ public class EmailContentDatabase : MonoBehaviour
 
     private static readonly string[] personalBlurbs = new string[]
     {
-        "Hey! I wanted to check in and see how you've been...",
-        "Can't believe it's been so long! I was thinking...",
-        "Found this amazing place we should visit together...",
-        "Just wanted to let you know I'm thinking of you...",
-        "Remember when we... I was just reminiscing about...",
-        "Hope you're doing well! I've been meaning to..."
+        "Hey! I wanted to check in and see how you've been doing lately. It feels like forever since we last talked...",
+        "Can't believe it's been so long! I was thinking about you the other day and remembered that funny thing we did...",
+        "Found this amazing place we should visit together sometime soon. I think you'd absolutely love it based on your interests...",
+        "Just wanted to let you know I'm thinking of you and hope everything is going well in your world right now...",
+        "Remember when we went to that concert? I was just reminiscing about it and had to smile at the memories we made...",
+        "Hope you're doing well! I've been meaning to reach out but life has been crazy. Let's definitely catch up soon..."
     };
 
     // Spam email subjects and blurbs
@@ -45,12 +45,12 @@ public class EmailContentDatabase : MonoBehaviour
 
     private static readonly string[] spamBlurbs = new string[]
     {
-        "Don't miss out! Click here immediately to...",
-        "We've detected unusual activity. Verify your...",
-        "Congratulations! You're our lucky winner. To...",
-        "This amazing product changed my life! You won't...",
-        "Millions of people are making money from home...",
-        "Banks HATE this one weird trick! Click to..."
+        "Don't miss out on this incredible opportunity! Click here immediately to claim your exclusive prize before it's too late...",
+        "We've detected unusual activity on your account. Please verify your information right away by clicking this link immediately...",
+        "Congratulations! You're our lucky winner! To claim your prize, you need to verify your personal details right away...",
+        "This amazing product changed my life completely! You won't believe the incredible results I've been getting every single day...",
+        "Millions of people are making serious money from home with this simple system. Work from anywhere, no experience needed...",
+        "Banks HATE this one weird trick! Learn the secret that financial institutions don't want you to know about today..."
     };
 
     // Urgent email subjects and blurbs
@@ -68,29 +68,59 @@ public class EmailContentDatabase : MonoBehaviour
 
     private static readonly string[] urgentBlurbs = new string[]
     {
-        "This issue needs to be resolved immediately. The...",
-        "We have a critical situation that requires your...",
-        "Please respond ASAP. The server is experiencing...",
-        "Your immediate attention is required for this...",
-        "This is time-sensitive and needs to be addressed...",
-        "Emergency: We need your help right away to..."
+        "This issue needs to be resolved immediately as it's blocking critical functionality. We need your input ASAP...",
+        "We have a critical situation that requires your urgent attention and expertise. Please respond immediately when you see this...",
+        "Please respond ASAP as the server is experiencing serious performance issues that are affecting all users right now...",
+        "Your immediate attention is required for this sensitive matter. The situation has escalated and needs your urgent response...",
+        "This is time-sensitive and needs to be addressed within the next hour to avoid serious consequences and downtime...",
+        "Emergency: We need your help right away to resolve this critical issue before it impacts everyone in the department..."
     };
 
-    private static readonly string[] timeSlots = new string[]
+    private static readonly string[] senderNames = new string[]
     {
-        "9:15 AM",
-        "9:32 AM",
-        "10:47 AM",
-        "11:05 AM",
-        "11:45 AM",
-        "12:30 PM",
-        "1:15 PM",
-        "2:00 PM",
-        "2:45 PM",
-        "3:30 PM",
-        "4:12 PM",
-        "5:00 PM",
-        "5:30 PM"
+        "Alice",
+        "Bob",
+        "Charlie",
+        "Diana",
+        "Emma",
+        "Frank",
+        "Grace",
+        "Henry",
+        "Iris",
+        "Jack",
+        "Karen",
+        "Leo",
+        "Mia"
+    };
+
+    private static readonly string[] importantNames = new string[]
+    {
+        "The President",
+        "CEO Jones",
+        "Director Smith",
+        "The Board",
+        "VP Richardson",
+        "Chief Executive",
+        "Head Honcho",
+        "The Big Boss",
+        "Senior Partner",
+        "Founder & CEO"
+    };
+
+    private static readonly string[] spamNames = new string[]
+    {
+        "Annoying Intern",
+        "Random Bot",
+        "Totally Legit Inc",
+        "Definitely Real",
+        "Trust Me LLC",
+        "Suspicious Seller",
+        "Anonymous Tipster",
+        "Weird Email Guy",
+        "Sketchy Services",
+        "Too Good To Be True",
+        "Click Here Now",
+        "Prize Committee"
     };
 
     /// <summary>
@@ -123,8 +153,29 @@ public class EmailContentDatabase : MonoBehaviour
                 break;
         }
 
-        string time = timeSlots[Random.Range(0, timeSlots.Length)];
-        return new EmailData(subject, blurb, time, category);
+        string name;
+        
+        // Use different name pools based on category
+        switch (category)
+        {
+            case EmailCategory.Personal:
+                name = senderNames[Random.Range(0, senderNames.Length)];
+                break;
+            
+            case EmailCategory.Urgent:
+                name = importantNames[Random.Range(0, importantNames.Length)];
+                break;
+            
+            case EmailCategory.Spam:
+                name = spamNames[Random.Range(0, spamNames.Length)];
+                break;
+            
+            default:
+                name = "Unknown";
+                break;
+        }
+        
+        return new EmailData(subject, blurb, name, category);
     }
 
     /// <summary>

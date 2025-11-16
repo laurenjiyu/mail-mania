@@ -20,14 +20,14 @@ public class EmailData
 {
     public string subject;
     public string blurb; // short excerpt from email body
-    public string time; // e.g., "11:45 AM", "2:30 PM"
+    public string name; // sender name
     public EmailCategory actualCategory; // what it ACTUALLY is
     
-    public EmailData(string subject, string blurb, string time, EmailCategory actualCategory)
+    public EmailData(string subject, string blurb, string name, EmailCategory actualCategory)
     {
         this.subject = subject;
         this.blurb = blurb;
-        this.time = time;
+        this.name = name;
         this.actualCategory = actualCategory;
     }
 }

@@ -12,7 +12,9 @@ public class EmailItem : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField] private TextMeshProUGUI subjectText;
     [SerializeField] private TextMeshProUGUI blurbText;
-    [SerializeField] private TextMeshProUGUI timeText;
+    [SerializeField] private TextMeshProUGUI nameText;
+    private Image backgroundImage;
+    private Color selectedColor = new Color(1f, 1f, 0.624f, 1f); // FFF79F in RGB
 
     private EmailData emailData;
     private int emailIndex;
@@ -27,6 +29,9 @@ public class EmailItem : MonoBehaviour, IPointerClickHandler
             Debug.LogError("EmailItem: Button component not found! Adding one now...");
             button = gameObject.AddComponent<Button>();
         }
+        
+        // Get the Image component for color changes
+        backgroundImage = GetComponent<Image>();
     }
 
     /// <summary>
@@ -40,7 +45,7 @@ public class EmailItem : MonoBehaviour, IPointerClickHandler
         // Update UI text
         if (subjectText != null) subjectText.text = data.subject;
         if (blurbText != null) blurbText.text = data.blurb;
-        if (timeText != null) timeText.text = data.time;
+        if (nameText != null) nameText.text = data.name;
 
         isSelected = false;
     }
@@ -74,6 +79,19 @@ public class EmailItem : MonoBehaviour, IPointerClickHandler
     public void SetSelected(bool selected)
     {
         isSelected = selected;
+        
+        // Change color when selected
+        if (backgroundImage != null)
+        {
+            if (selected)
+            {
+                backgroundImage.color = selectedColor; // FFF79F color
+            }
+            else
+            {
+                backgroundImage.color = Color.white; // Default white
+            }
+        }
     }
 
     /// <summary>
