@@ -5,12 +5,18 @@ using UnityEngine.UI;
 
 public class progressBar : MonoBehaviour
 {
-    public Image Filling;   // Image with fill type = Filled
-    public float progress = 0f;  // 0 to 1
+    public Image Filling;   
+    public float progress = 0f;  
 
     public void AddProgress(float amount)
     {
-        progress = Mathf.Clamp01(progress + amount);
+        progress = progress + amount; 
+        Filling.fillAmount = progress;
+    }
+
+    public void RemoveProgress(float amount)
+    {
+        progress = progress - amount; 
         Filling.fillAmount = progress;
     }
 
