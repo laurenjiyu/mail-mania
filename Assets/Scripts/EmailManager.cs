@@ -12,6 +12,8 @@ public class EmailManager : MonoBehaviour
     [SerializeField] private Transform emailContainer; // Parent transform where emails are displayed
     [SerializeField] private GameObject emailPrefab; // Email prefab to instantiate
     [SerializeField] private int initialEmailCount = 7; // Number of emails to start with
+    public GameObject tryAgainPopup;
+
 
     private List<EmailData> currentEmails = new List<EmailData>();
     private EmailItem selectedEmailItem = null;
@@ -173,18 +175,56 @@ public class EmailManager : MonoBehaviour
         DisplayEmails();
 
         // Add a new email to the bottom
-        if (currentEmails.Count > 0)
-        {
-            EmailCategory[] categories = { EmailCategory.Personal, EmailCategory.Spam, EmailCategory.Urgent };
-            EmailCategory newCategory = categories[Random.Range(0, categories.Length)];
-            currentEmails.Add(EmailContentDatabase.GenerateEmail(newCategory));
-            DisplayEmails();
-        }
+        // if (currentEmails.Count > 0)
+        // {
+        //     EmailCategory[] categories = { EmailCategory.Personal, EmailCategory.Spam, EmailCategory.Urgent };
+        //     EmailCategory newCategory = categories[Random.Range(0, categories.Length)];
+        //     currentEmails.Add(EmailContentDatabase.GenerateEmail(newCategory));
+        //     DisplayEmails();
+        // }
 
         // Log accuracy
         float accuracy = (float)correctSortCount / totalSortCount * 100f;
         Debug.Log($"Accuracy: {correctSortCount}/{totalSortCount} ({accuracy:F1}%)");
     }
+
+    private void OnEnable()
+    {
+        StartCoroutine(SpawnEmailRoutine());
+    }
+
+    private IEnumerator SpawnEmailRoutine()
+    {
+        while (true)
+        {
+            float interval = Random.Range(5f * 0.2f, 5f * 0.8f);
+            yield return new WaitForSeconds(interval);
+
+            //yield return new WaitForSeconds(5f); // wait 5 seconds
+            Debug.Log($"num emails {currentEmails.Count}");
+
+            if (currentEmails.Count < 7)
+            {
+                EmailCategory[] categories = { EmailCategory.Personal, EmailCategory.Spam, EmailCategory.Urgent };
+                EmailCategory newCategory = categories[Random.Range(0, categories.Length)];
+                EmailData newEmail = EmailContentDatabase.GenerateEmail(newCategory);
+
+                currentEmails.Insert(0, newEmail);
+
+                DisplayEmails();
+            }
+            else
+            {
+                tryAgainPopup.SetActive(true);
+            }
+        }
+    }
+
+    private void OnDisable()
+    {
+        StopAllCoroutines();
+    }
+
 
     /// <summary>
     /// Gets current sort accuracy
