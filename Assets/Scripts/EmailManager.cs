@@ -17,6 +17,7 @@ public class EmailManager : MonoBehaviour
     private EmailItem selectedEmailItem = null;
     private int correctSortCount = 0;
     private int totalSortCount = 0;
+    public progressBar progressBar;
 
     // Singleton pattern
     public static EmailManager Instance { get; private set; }
@@ -154,6 +155,7 @@ public class EmailManager : MonoBehaviour
         {
             correctSortCount++;
             Debug.Log("Correct! ✓");
+            progressBar.AddProgress(0.10f);
         }
         else
         {
