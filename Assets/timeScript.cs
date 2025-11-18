@@ -42,10 +42,23 @@ public class timeScript : MonoBehaviour
         float hoursPassed = percentGoneBy * 8f; 
         float currentHour = 9f + hoursPassed;  
 
+        if (9f + hoursPassed > 12f)
+        {
+            currentHour = (9f + hoursPassed) % 12f;
+        }
+
         int hour = Mathf.FloorToInt(currentHour);
         int minute = Mathf.FloorToInt((currentHour - hour) * 60f);
+        List<int> am = new List<int>{9, 10, 11};
+        // int pm = [12, 1, 2, 3, 4, 5];
 
-        TimeText.text = $"{hour:00}:{minute:00}";
+        if (am.Contains(hour)){
+            TimeText.text = $"{hour:00}:{minute:00} am";
+        } else
+        {
+            TimeText.text = $"{hour:00}:{minute:00} pm ";
+        }
+
     }
 
     void EndOfDay()
