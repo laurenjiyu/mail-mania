@@ -11,4 +11,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/02_Game.unity
     guid: fd60dd9af4c9112489e57fdf9eec5c47
+  - enabled: 1
+    path: Assets/Scenes/How_To.unity
+    guid: 5e88bff78d7e94031b4a57d2a0ab9285
+  - enabled: 1
+    path: Assets/Scenes/02_Mail.unity
+    guid: 3c1b1a15351574e3990f80bd29b38206
+  - enabled: 1
+    path: Assets/Scenes/Countdown.unity
+    guid: cf197469af5494dc9b644a683a9c81ca
   m_configObjects: {}
