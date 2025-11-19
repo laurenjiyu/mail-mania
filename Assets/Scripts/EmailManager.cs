@@ -174,15 +174,6 @@ public class EmailManager : MonoBehaviour
         // Refresh display
         DisplayEmails();
 
-        // Add a new email to the bottom
-        // if (currentEmails.Count > 0)
-        // {
-        //     EmailCategory[] categories = { EmailCategory.Personal, EmailCategory.Spam, EmailCategory.Urgent };
-        //     EmailCategory newCategory = categories[Random.Range(0, categories.Length)];
-        //     currentEmails.Add(EmailContentDatabase.GenerateEmail(newCategory));
-        //     DisplayEmails();
-        // }
-
         // Log accuracy
         float accuracy = (float)correctSortCount / totalSortCount * 100f;
         Debug.Log($"Accuracy: {correctSortCount}/{totalSortCount} ({accuracy:F1}%)");
@@ -200,7 +191,6 @@ public class EmailManager : MonoBehaviour
             float interval = Random.Range(5f * 0.2f, 5f * 0.8f);
             yield return new WaitForSeconds(interval);
 
-            //yield return new WaitForSeconds(5f); // wait 5 seconds
             Debug.Log($"num emails {currentEmails.Count}");
 
             if (currentEmails.Count < 7)
