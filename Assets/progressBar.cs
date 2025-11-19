@@ -14,12 +14,6 @@ public class progressBar : MonoBehaviour
         Filling.fillAmount = progress;
     }
 
-    public void RemoveProgress(float amount)
-    {
-        progress = progress - amount; 
-        Filling.fillAmount = progress;
-    }
-
     public bool IsFull()
     {
         return progress >= 1f;

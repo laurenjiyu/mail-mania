@@ -6,7 +6,7 @@ using TMPro;
 public class timeScript : MonoBehaviour
 {
     public TextMeshProUGUI TimeText;     
-    public float workdayDuration = 300f;  // 5 mins * 60 sec
+    public float workdayDuration = 60f;  // 5 mins * 60 sec
     public GameObject victoryPopup;       
     public GameObject tryAgainPopup;        
     public progressBar progressBar;  
@@ -27,7 +27,6 @@ public class timeScript : MonoBehaviour
             EndOfDay();
         }
         
-        CheckIsNegative();
         CheckIsFull();
         Debug.Log($"Progress: {progressBar.progress}");
         UpdateClock();
@@ -65,11 +64,11 @@ public class timeScript : MonoBehaviour
     {
         if (progressBar.IsFull())
         {
-            victoryPopup.SetActive(true);
+            tryAgainPopup.SetActive(true);
         }
         else
         {
-            tryAgainPopup.SetActive(true);
+            victoryPopup.SetActive(true);
         }
 
         Time.timeScale = 0f;
@@ -80,18 +79,18 @@ public class timeScript : MonoBehaviour
         if (progressBar.IsFull())
         {
             finished = true;
-            victoryPopup.SetActive(true);
-            Time.timeScale = 0f;
-        }
-    }
-
-    void CheckIsNegative()
-    {
-        if (progressBar.progress < 0f)
-        {
-            finished = true;
             tryAgainPopup.SetActive(true);
             Time.timeScale = 0f;
         }
     }
+
+    // void CheckIsNegative()
+    // {
+    //     if (progressBar.progress < 0f)
+    //     {
+    //         finished = true;
+    //         tryAgainPopup.SetActive(true);
+    //         Time.timeScale = 0f;
+    //     }
+    // }
 }

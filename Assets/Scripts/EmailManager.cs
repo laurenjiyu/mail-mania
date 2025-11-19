@@ -157,11 +157,11 @@ public class EmailManager : MonoBehaviour
         {
             correctSortCount++;
             Debug.Log("Correct! ✓");
-            progressBar.AddProgress(0.1f);
+            // progressBar.AddProgress(0.1f);
         }
         else
         {
-            progressBar.RemoveProgress(0.1f);
+            progressBar.AddProgress(0.1f);
             Debug.Log($"Incorrect! It was {selectedEmail.actualCategory}, not {category}");
         }
         

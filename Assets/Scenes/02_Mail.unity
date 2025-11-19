@@ -690,8 +690,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Mistakes:'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: df6248218de9a4a43b3e99f94bc26f7f, type: 2}
+  m_sharedMaterial: {fileID: 55354643954537754, guid: df6248218de9a4a43b3e99f94bc26f7f, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1302,6 +1302,7 @@ MonoBehaviour:
   emailContainer: {fileID: 1779337250}
   emailPrefab: {fileID: 2289209700411888233, guid: 62ff3872d986c427495848559c2ce44c, type: 3}
   initialEmailCount: 5
+  tryAgainPopup: {fileID: 0}
   progressBar: {fileID: 507741206}
 --- !u!4 &743632124
 Transform:
@@ -2551,8 +2552,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: New Text
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: df6248218de9a4a43b3e99f94bc26f7f, type: 2}
+  m_sharedMaterial: {fileID: 55354643954537754, guid: df6248218de9a4a43b3e99f94bc26f7f, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
