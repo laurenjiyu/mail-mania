@@ -6,7 +6,8 @@ using TMPro;
 public class timeScript : MonoBehaviour
 {
     public TextMeshProUGUI TimeText;     
-    public float workdayDuration = 60f;  // 5 mins * 60 sec
+    // public float workdayDuration = 300f; 
+    public float clock = 60f; 
     public GameObject victoryPopup;       
     public GameObject tryAgainPopup;        
     public progressBar progressBar;  
@@ -20,9 +21,9 @@ public class timeScript : MonoBehaviour
 
         elapsed += Time.deltaTime;
 
-        if (elapsed >= workdayDuration) 
+        if (elapsed >= clock) 
         {
-            elapsed = workdayDuration;
+            elapsed = clock;
             finished = true;
             EndOfDay();
         }
@@ -35,7 +36,7 @@ public class timeScript : MonoBehaviour
 
     void UpdateClock()
     {
-        float percentGoneBy = elapsed / workdayDuration; 
+        float percentGoneBy = Mathf.Clamp01(elapsed / clock); 
 
         // how many hours is the percent, add to 9 am
         float hoursPassed = percentGoneBy * 8f; 
