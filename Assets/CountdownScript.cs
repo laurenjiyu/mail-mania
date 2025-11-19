@@ -14,8 +14,21 @@ public class CountdownScript : MonoBehaviour
 
     private void Start()
     {
+        // Reset game state when countdown scene loads
+        ResetGameState();
+        
         // Auto-start countdown when scene loads
         StartCountdown();
+    }
+    
+    /// <summary>
+    /// Resets game state to ensure clean restart
+    /// </summary>
+    private void ResetGameState()
+    {
+        // Reset time scale in case it was paused from previous game
+        Time.timeScale = 1f;
+        Debug.Log("Game state reset: Time.timeScale = 1f");
     }
 
     /// <summary>

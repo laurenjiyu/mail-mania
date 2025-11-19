@@ -14,9 +14,11 @@ public class UI_SwitchScene : MonoBehaviour
     
     public void SwitchSceneTo(string sceneName)
     {
-
+        // Reset game state before switching scenes
+        Time.timeScale = 1f;
+        Debug.Log($"Switching to {sceneName} - Time.timeScale reset to 1f");
+        
         SceneManager.LoadScene(sceneName);
-
     }
 
 }

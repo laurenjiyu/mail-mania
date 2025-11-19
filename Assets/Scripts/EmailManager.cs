@@ -84,11 +84,22 @@ public class EmailManager : MonoBehaviour
     {
         Debug.Log($"DisplayEmails called with {currentEmails.Count} emails");
         
+        // Remember which email was selected before rebuilding
+        EmailData selectedEmailData = null;
+        if (selectedEmailItem != null)
+        {
+            selectedEmailData = selectedEmailItem.GetEmailData();
+            Debug.Log($"Preserving selection for: {selectedEmailData.subject}");
+        }
+        
         // Clear existing email displays
         foreach (Transform child in emailContainer)
         {
             Destroy(child.gameObject);
         }
+        
+        // Reset selected item reference since we destroyed the GameObjects
+        selectedEmailItem = null;
 
         // Instantiate new email displays
         for (int i = 0; i < currentEmails.Count; i++)
@@ -119,6 +130,15 @@ public class EmailManager : MonoBehaviour
             else
             {
                 emailItem.SetData(currentEmails[i], i);
+                
+                // Restore selection if this was the previously selected email
+                if (selectedEmailData != null && currentEmails[i] == selectedEmailData)
+                {
+                    selectedEmailItem = emailItem;
+                    emailItem.SetSelected(true);
+                    Debug.Log($"Restored selection for: {selectedEmailData.subject}");
+                }
+                
                 Debug.Log($"Email {i} setup complete");
             }
         }
@@ -188,7 +208,7 @@ public class EmailManager : MonoBehaviour
     {
         while (true)
         {
-            float interval = Random.Range(5f * 0.2f, 5f * 0.8f);
+            float interval = Random.Range(0.5f, 2f); // Much faster: 0.5-2 seconds
             yield return new WaitForSeconds(interval);
 
             Debug.Log($"num emails {currentEmails.Count}");
@@ -205,7 +225,34 @@ public class EmailManager : MonoBehaviour
             }
             else
             {
-                tryAgainPopup.SetActive(true);
+                Debug.Log("Game Over: Too many emails!");
+                
+                // Debug the popup reference
+                if (tryAgainPopup != null)
+                {
+                    Debug.Log($"EmailManager popup found: {tryAgainPopup.name}, active: {tryAgainPopup.activeInHierarchy}");
+                    tryAgainPopup.SetActive(true);
+                    Debug.Log($"EmailManager popup after SetActive: {tryAgainPopup.activeInHierarchy}");
+                }
+                else
+                {
+                    Debug.LogError("EmailManager tryAgainPopup is NULL! Using timeScript popup as fallback...");
+                    
+                    // Use the same popup that works for time/mistakes
+                    timeScript timeScriptComponent = FindObjectOfType<timeScript>();
+                    if (timeScriptComponent != null && timeScriptComponent.tryAgainPopup != null)
+                    {
+                        Debug.Log($"Using timeScript popup: {timeScriptComponent.tryAgainPopup.name}");
+                        timeScriptComponent.tryAgainPopup.SetActive(true);
+                    }
+                    else
+                    {
+                        Debug.LogError("timeScript popup is also null!");
+                    }
+                }
+                
+                Time.timeScale = 0f; // Pause the game like other conditions
+                yield break; // Exit the coroutine - stop spawning emails
             }
         }
     }
